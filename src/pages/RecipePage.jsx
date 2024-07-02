@@ -1,64 +1,119 @@
-// src/components/RecipePage.jsx
-import { Box, Image, Text, Button } from "@chakra-ui/react";
+import {
+  Box,
+  Image,
+  Text,
+  Button,
+  VStack,
+  Heading,
+  Container,
+  UnorderedList,
+  ListItem,
+  SimpleGrid,
+  Badge,
+} from "@chakra-ui/react";
 
 const RecipePage = ({ recipe, onBackClick }) => {
   return (
-    <Box>
-      <Button onClick={onBackClick}>Back to Recipes</Button>
-      <Text fontSize="3xl">{recipe.label}</Text>
-      <Image
-        src={recipe.image}
-        alt={recipe.label}
-        boxSize="400px"
-        objectFit="cover"
-      />
+    <Container maxW="container.xl" py={8}>
+      <VStack spacing={8} align="stretch">
+        <Button onClick={onBackClick} mb={4}>
+          Back to Recipes
+        </Button>
+        <Heading size="2xl" textAlign="center">
+          {recipe.label}
+        </Heading>
+        <Image
+          src={recipe.image}
+          alt={recipe.label}
+          maxH="400px"
+          objectFit="cover"
+          borderRadius="md"
+          mx="auto"
+        />
 
-      {/* Meal Type */}
-      <Text>Meal Type: {recipe.mealType.join(", ")}</Text>
+        <SimpleGrid columns={{ base: 1, md: 2 }} spacing={8}>
+          <Box>
+            <VStack align="start" spacing={4}>
+              <Text fontWeight="bold">
+                Meal Type: {recipe.mealType.join(", ")}
+              </Text>
+              <Text fontWeight="bold">
+                Dish Type: {recipe.dishType.join(", ")}
+              </Text>
+              <Text fontWeight="bold">
+                Total Cooking Time: {recipe.totalTime} minutes
+              </Text>
+              {recipe.dietLabels.length > 0 && (
+                <Text fontWeight="bold">
+                  Diet Label: {recipe.dietLabels.join(", ")}
+                </Text>
+              )}
+              {recipe.healthLabels.length > 0 && (
+                <Box>
+                  <Text fontWeight="bold">Health Labels:</Text>
+                  <Box mt={2}>
+                    {recipe.healthLabels.map((label, index) => (
+                      <Badge key={index} mr={2} mb={2} colorScheme="green">
+                        {label}
+                      </Badge>
+                    ))}
+                  </Box>
+                </Box>
+              )}
+              {recipe.cautions.length > 0 && (
+                <Box>
+                  <Text fontWeight="bold">Cautions:</Text>
+                  <Box mt={2}>
+                    {recipe.cautions.map((caution, index) => (
+                      <Badge key={index} mr={2} mb={2} colorScheme="red">
+                        {caution}
+                      </Badge>
+                    ))}
+                  </Box>
+                </Box>
+              )}
+            </VStack>
+          </Box>
 
-      {/* Dish Type */}
-      <Text>Dish Type: {recipe.dishType.join(", ")}</Text>
+          <Box>
+            <VStack align="start" spacing={4}>
+              <Heading size="md">Ingredients:</Heading>
+              <UnorderedList spacing={2}>
+                {recipe.ingredientLines.map((ingredient, index) => (
+                  <ListItem key={index}>{ingredient}</ListItem>
+                ))}
+              </UnorderedList>
+              <Text fontWeight="bold">Servings: {recipe.yield}</Text>
+            </VStack>
+          </Box>
+        </SimpleGrid>
 
-      {/* Total Cooking Time */}
-      <Text>Total Cooking Time: {recipe.totalTime} minutes</Text>
-
-      {/* Diet Label */}
-      {recipe.dietLabels.length > 0 && (
-        <Text>Diet Label: {recipe.dietLabels.join(", ")}</Text>
-      )}
-
-      {/* Health Labels */}
-      {recipe.healthLabels.length > 0 && (
-        <Text>Health Labels: {recipe.healthLabels.join(", ")}</Text>
-      )}
-
-      {/* Cautions */}
-      {recipe.cautions.length > 0 && (
-        <Text>Cautions: {recipe.cautions.join(", ")}</Text>
-      )}
-
-      {/* Ingredients */}
-      <Text>Ingredients:</Text>
-      <ul>
-        {recipe.ingredientLines.map((ingredient, index) => (
-          <li key={index}>{ingredient}</li>
-        ))}
-      </ul>
-
-      {/* Servings */}
-      <Text>Servings: {recipe.yield}</Text>
-
-      {/* Total Nutrients */}
-      <Text>Total Nutrients:</Text>
-      <ul>
-        <li>Energy: {recipe.totalNutrients.ENERC_KCAL.quantity} kcal</li>
-        <li>Protein: {recipe.totalNutrients.PROCNT.quantity} g</li>
-        <li>Fat: {recipe.totalNutrients.FAT.quantity} g</li>
-        <li>Carbs: {recipe.totalNutrients.CHOCDF.quantity} g</li>
-        <li>Cholesterol: {recipe.totalNutrients.CHOLE.quantity} mg</li>
-        <li>Sodium: {recipe.totalNutrients.NA.quantity} mg</li>
-      </ul>
-    </Box>
+        <Box>
+          <Heading size="md" mb={4}>
+            Total Nutrients:
+          </Heading>
+          <SimpleGrid columns={{ base: 2, md: 3 }} spacing={4}>
+            <Text>
+              Energy: {Math.round(recipe.totalNutrients.ENERC_KCAL.quantity)}{" "}
+              kcal
+            </Text>
+            <Text>
+              Protein: {Math.round(recipe.totalNutrients.PROCNT.quantity)} g
+            </Text>
+            <Text>Fat: {Math.round(recipe.totalNutrients.FAT.quantity)} g</Text>
+            <Text>
+              Carbs: {Math.round(recipe.totalNutrients.CHOCDF.quantity)} g
+            </Text>
+            <Text>
+              Cholesterol: {Math.round(recipe.totalNutrients.CHOLE.quantity)} mg
+            </Text>
+            <Text>
+              Sodium: {Math.round(recipe.totalNutrients.NA.quantity)} mg
+            </Text>
+          </SimpleGrid>
+        </Box>
+      </VStack>
+    </Container>
   );
 };
 
