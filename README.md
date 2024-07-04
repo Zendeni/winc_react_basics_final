@@ -34,9 +34,8 @@ Open your browser and go to http://localhost:5173.
 File Structure
 ```
 src/
-|-- components/
-|   |-- RecipePage.jsx
 |-- pages/
+|   |-- RecipePage.jsx
 |   |-- RecipeListPage.jsx
 |-- utils/
 |   |-- data.js
